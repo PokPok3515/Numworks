@@ -32,7 +32,7 @@ def rect(x, y, w, h, e, c, cfond):
   kandinsky.fill_rect(x, y, w, h, c)
   kandinsky.fill_rect(x + e, y + e, w - 2 * e, h - 2 * e, cfond)
 
-def case(x, y, type): #types : g, h, d, b, bi, c
+def case(x, y, type): #types : g, h, d, b, o, c
   xc = x + 4
   yc = y + 4
   xb = x + 7
@@ -69,7 +69,7 @@ def case(x, y, type): #types : g, h, d, b, bi, c
     [1, 1, 1, 1],
     [0, 1, 1, 0]
   ]
-  if "bi" in type:
+  if "o" in type:
     for num_ligne, ligne in enumerate(boule):
       for num_pixel, pixel in enumerate(ligne):
         if pixel == 1:
@@ -83,7 +83,7 @@ def case(x, y, type): #types : g, h, d, b, bi, c
           kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, rouge)
         elif pixel == 3:
           kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, blanc)
-  if not "bi" in type and not "c" in type:
+  if not "o" in type and not "c" in type:
     for num_ligne, ligne in enumerate(bille):
       for num_pixel, pixel in enumerate(ligne):
         if pixel == 1:
