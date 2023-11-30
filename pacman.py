@@ -35,9 +35,9 @@ def rect(x, y, w, h, e, c, cfond):
 def case(x, y, type):
   xc = x + 4
   yc = y + 4
-  xb = x + 6
-  yb = x + 6
-  xb2 = x + 8
+  xb = x + 7
+  yb = y + 7
+  xb2 = x + 9
   yb2 = y + 8
   cerise = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
@@ -69,7 +69,7 @@ def case(x, y, type):
     [1, 1, 1, 1],
     [0, 1, 1, 0]
   ]
-  if "b" in type:
+  if "bi" in type:
     for num_ligne, ligne in enumerate(boule):
       for num_pixel, pixel in enumerate(ligne):
         if pixel == 1:
@@ -83,7 +83,7 @@ def case(x, y, type):
           kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, rouge)
         elif pixel == 3:
           kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, blanc)
-  if not "b" in type and not "c" in type:
+  if not "bi" in type and not "c" in type:
     for num_ligne, ligne in enumerate(bille):
       for num_pixel, pixel in enumerate(ligne):
         if pixel == 1:
