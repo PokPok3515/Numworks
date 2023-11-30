@@ -32,7 +32,7 @@ def rect(x, y, w, h, e, c, cfond):
   kandinsky.fill_rect(x, y, w, h, c)
   kandinsky.fill_rect(x + e, y + e, w - 2 * e, h - 2 * e, cfond)
 
-def case(x, y, type):
+def case(x, y, type): #types : h, d, b, g, c, b
   xc = x + 5
   yc = y + 5
   cerise = [
