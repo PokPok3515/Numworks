@@ -97,6 +97,29 @@ def case(x, y, type): #types : g, h, d, b, o, c
   if "b" in type:
     kandinsky.fill_rect(x, y + hcase, wcase, int(emur/2), violet)
 
+def draw_map():
+  global wcase
+  global hcase
+  global px
+  global py
+  map = [
+    ["", "", "", "gho", "bh", "hd", "gbd", "gd", "gbd", "gh", "bh", "hdo", "", "", ""],
+    ["", "", "", "gd", "gh", "d", "gh", "b", "hd", "g", "hd", "gd", "", "", ""],
+    ["gh", "bh", "bh", "", "db", "gd", "g", "hb", "d", "gd", "gb", "", "h", "h", "hd"],
+    ["gd", "h", "hdb", "g", "hd", "g", "b", "hb", "b", "d", "gh", "d", "ghb", "hd", "d"],
+    ["gb", "", "h", "bd", "b", "d", "gh", "", "hd", "g", "bd", "gb", "h", "", "bd"],
+    ["gh", "d", "g", "hb", "hb", "d", "gb", "b", "bd", "g", "hb", "hb", "d", "g", "hd"],
+    ["gd", "gd", "gd", "gh", "hb", "", "hb", "hbc", "hb", "", "hb", "hd", "gd", "gd", "gd"],
+    ["gd", "gd", "gbdo", "gd", "gh", "b", "hb", "hb", "hb", "b", "hd", "gd", "gbdo", "gd", "gd"],
+    ["g", "b", "h", "b", "b", "h", "hb", "h", "hb", "h", "b", "b", "h", "b", "d"],
+    ["gb", "hb", "b", "hb", "hb", "b", "ghd", "gd", "ghd", "b", "hb", "hb", "b", "hb", "bd"]
+  ]
+  for num_ligne, ligne in enumerate(map):
+    for num_pixel, pixel in enumerate(ligne):
+      case(num_pixel * wcase + int(wecran/2 - wmap * 10), num_ligne * hcase + int(hecran/2 - hmap * 10), pixel)
+  px = 7 * wcase + int(wecran/2 - wmap * 10) + 3
+  py = 7 * hcase + int(hecran/2 - hmap * 10) + 2
+
 def init():
   kandinsky.fill_rect(0, 0, wecran, hecran, fond)
   rect(int(wecran/2 - wmap * 10), int(hecran/2 - hmap * 10), wmap * 20, hmap * 20, eligne, violet, fond)
@@ -104,7 +127,8 @@ def init():
   #ghost(100, 150, rose, 0)
   #ghost(150, 15, cyan, 0)
   #ghost(150, 150, orange, 0)
-  case(180, 40, "ghdb")
+  #case(180, 40, "ghdb")
+  draw_map()
 
 def bordure(px, py):
   resultat = [0, 0, 0, 0]
@@ -145,11 +169,11 @@ def ghost(x, y, couleur, comp):
   for num_ligne, ligne in enumerate(ghost):
     for num_pixel, pixel in enumerate(ligne):
       if pixel == 1:
-        kandinsky.set_pixel(x+num_pixel, y+num_ligne, couleur)
+        kandinsky.set_pixel(x + num_pixel, y + num_ligne, couleur)
       elif pixel == 2:
-        kandinsky.set_pixel(x+num_pixel, y+num_ligne, blanc)
+        kandinsky.set_pixel(x + num_pixel, y + num_ligne, blanc)
       elif pixel == 3:
-        kandinsky.set_pixel(x+num_pixel, y+num_ligne, noir)
+        kandinsky.set_pixel(x + num_pixel, y + num_ligne, noir)
 
 def pacman(x, y, ori, ouverture):
   pcm_ferme = [
