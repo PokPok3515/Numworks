@@ -33,8 +33,12 @@ def rect(x, y, w, h, e, c, cfond):
   kandinsky.fill_rect(x + e, y + e, w - 2 * e, h - 2 * e, cfond)
 
 def case(x, y, type):
-  xc = x + 5
-  yc = y + 5
+  xc = x + 4
+  yc = y + 4
+  xb = x + 7
+  yb = y + 7
+  xb2 = x + 9
+  yb2 = y + 8
   cerise = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
@@ -49,15 +53,41 @@ def case(x, y, type):
     [0, 0, 0, 0, 0, 2, 2, 3, 2, 2, 2, 0],
     [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0]
   ]
+  boule = [
+    [0, 0, 1, 1, 1, 1, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 1, 1, 1, 1, 0, 0]
+  ]
+  bille = [
+    [0, 1, 1, 0],
+    [1, 1, 1, 1],
+    [1, 1, 1, 1],
+    [0, 1, 1, 0]
+  ]
+  if "bi" in type:
+    for num_ligne, ligne in enumerate(boule):
+      for num_pixel, pixel in enumerate(ligne):
+        if pixel == 1:
+          kandinsky.set_pixel(xb+num_pixel, yb+num_ligne, jaune)
   if "c" in type:
     for num_ligne, ligne in enumerate(cerise):
-        for num_pixel, pixel in enumerate(ligne):
-            if pixel == 1:
-                kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, beige)
-            elif pixel == 2:
-                kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, rouge)
-            elif pixel == 3:
-                kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, blanc)
+      for num_pixel, pixel in enumerate(ligne):
+        if pixel == 1:
+          kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, beige)
+        elif pixel == 2:
+          kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, rouge)
+        elif pixel == 3:
+          kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, blanc)
+  if not "bi" in type and not "c" in type:
+    for num_ligne, ligne in enumerate(bille):
+      for num_pixel, pixel in enumerate(ligne):
+        if pixel == 1:
+          kandinsky.set_pixel(xb2+num_pixel, yb2+num_ligne, jaune)
   if "g" in type:
     kandinsky.fill_rect(x, y, int(emur/2), hcase, violet)
   if "h" in type:
