@@ -118,8 +118,8 @@ def draw_map():
     for num_pixel, pixel in enumerate(ligne):
       #case(num_pixel * wcase + int(wecran/2 - wmap * 10), num_ligne * hcase + int(hecran/2 - hmap * 10), pixel)
       case(num_pixel * wcase, num_ligne * hcase + 6, pixel)
-  px = 7 * wcase + int(wecran/2 - wmap * 10) + 3
-  py = 7 * hcase + int(hecran/2 - hmap * 10) + 2
+  px = 7 * wcase + int(wecran/2 - wmap * 10) - 7
+  py = 7 * hcase + int(hecran/2 - hmap * 10) - 2
 
 def init():
   kandinsky.fill_rect(0, 0, wecran, hecran, fond)
