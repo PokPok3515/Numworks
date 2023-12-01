@@ -92,6 +92,8 @@ def case(x, y, type): #types : g, h, d, b, o, c
     kandinsky.fill_rect(x, y, int(emur/2), hcase, violet)
   if "h" in type:
     kandinsky.fill_rect(x, y, wcase + 2, int(emur/2), violet)
+  elif "p" in type:
+    kandinsky.fill_rect(x, y, wcase + 2, int(emur/2), rose)
   if "d" in type:
     kandinsky.fill_rect(x + wcase, y, int(emur/2), hcase, violet)
   if "b" in type:
@@ -107,7 +109,7 @@ def draw_map():
     ["v", "v", "v", "gd", "gh", "d", "gh", "b", "hd", "g", "hd", "gd", "v", "v", "v"],
     ["gh", "bh", "bh", "", "db", "gd", "g", "hb", "d", "gd", "gb", "", "h", "h", "hd"],
     ["gd", "h", "hdb", "g", "hd", "g", "b", "hb", "b", "d", "gh", "d", "ghb", "hd", "d"],
-    ["gb", "", "h", "bd", "b", "d", "ghv", "v", "hdv", "g", "bd", "gb", "h", "", "bd"],
+    ["gb", "", "h", "bd", "b", "d", "ghv", "vp", "hdv", "g", "bd", "gb", "h", "", "bd"],
     ["gh", "d", "g", "hb", "hb", "d", "gbv", "bv", "bdv", "g", "hb", "hb", "d", "g", "hd"],
     ["gd", "gd", "gd", "gh", "hb", "", "hb", "hbc", "hb", "", "hb", "hd", "gd", "gd", "gd"],
     ["gd", "gd", "gbdo", "gd", "gh", "b", "hb", "hb", "hb", "b", "hd", "gd", "gbdo", "gd", "gd"],
@@ -129,10 +131,24 @@ def init():
   #ghost(150, 150, orange, 0)
   draw_map()
 
-def bordure(px, py):
-  marge = 2
-  range = 17
+def bordure(px, py, perso): #perso : 1 = Pacman, 2 = ghost
+  marge = 1
+  range = 16
   resultat = [0, 0, 0, 0]
+  if perso == 1:
+    for i in range(px - marge, px + range):
+      if kandinsky.get_pixel(i, py - marge) == violet or kandinsky.get_pixel(i, py - marge) == rose:
+        resultat[0] = resultat[0] + 1
+    for i in range(py - marge, py + range):
+      if kandinsky.get_pixel(px + range, i) == violet or kandinsky.get_pixel(px + range, i) == rose:
+        resultat[1] = resultat[1] + 1
+    for i in range(px - marge, px + range):
+      if kandinsky.get_pixel(i, py + range) == violet or kandinsky.get_pixel(i, py + range) == rose:
+        resultat[2] = resultat[2] + 1
+    for i in range(py - marge, py + range):
+      if kandinsky.get_pixel(px - marge, i) == violet or kandinsky.get_pixel(px - marge, i) == rose:
+        resultat[3] = resultat[3] + 1
+    
   for i in range(px - marge, px + range):
     if kandinsky.get_pixel(i, py - marge) == violet:
       resultat[0] = resultat[0] + 1
@@ -311,19 +327,19 @@ def mouv_pacman(ouverture):
   
   if ion.keydown(droite):
     dire = 1
-    if not bordure(px, py)[1] >= 2:
+    if not bordure(px, py, 1)[1] >= 2:
       px = px + 1
   elif ion.keydown(bas):
     dire = 2
-    if not bordure(px, py)[2] >= 2:
+    if not bordure(px, py, 1)[2] >= 2:
       py = py + 1
   elif ion.keydown(gauche):
     dire = 3
-    if not bordure(px, py)[3] >= 2:
+    if not bordure(px, py, 1)[3] >= 2:
       px = px - 1
   elif ion.keydown(haut):
     dire = 4
-    if not bordure(px, py)[0] >= 2:
+    if not bordure(px, py, 1)[0] >= 2:
       py = py - 1
   pacman(px, py, dire, ouverture)
 
