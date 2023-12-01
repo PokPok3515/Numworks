@@ -4,8 +4,8 @@ wecran = 320
 hecran = 222
 wmap = 15 #10 cases de 20x20px
 hmap = 10 #15 cases
-wcase = 20
-hcase = 20
+wcase = 21
+hcase = 21
 fond = kandinsky.color(0, 0, 0)
 violet = kandinsky.color(80, 0, 255)
 jaune = kandinsky.color(255, 225, 0)
@@ -17,7 +17,7 @@ cyan = kandinsky.color(0, 220, 255)
 orange = kandinsky.color(255, 125, 0)
 beige = kandinsky.color(255, 230, 200)
 eligne = 2
-emur = eligne #2 minimum
+emur = 4 #2 minimum
 gauche = ion.KEY_LEFT
 droite = ion.KEY_RIGHT
 haut = ion.KEY_UP
@@ -83,7 +83,7 @@ def case(x, y, type): #types : g, h, d, b, o, c
           kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, rouge)
         elif pixel == 3:
           kandinsky.set_pixel(xc+num_pixel, yc+num_ligne, blanc)
-  if not "o" in type and not "c" in type:
+  if not "o" in type and not "c" in type and not "v" in type:
     for num_ligne, ligne in enumerate(bille):
       for num_pixel, pixel in enumerate(ligne):
         if pixel == 1:
@@ -103,26 +103,27 @@ def draw_map():
   global px
   global py
   map = [
-    ["", "", "", "gho", "bh", "hd", "gbd", "gd", "gbd", "gh", "bh", "hdo", "", "", ""],
-    ["", "", "", "gd", "gh", "d", "gh", "b", "hd", "g", "hd", "gd", "", "", ""],
+    ["v", "v", "v", "gho", "bh", "hd", "gbdv", "gd", "gbdv", "gh", "bh", "hdo", "v", "v", "v"],
+    ["v", "v", "v", "gd", "gh", "d", "gh", "b", "hd", "g", "hd", "gd", "v", "v", "v"],
     ["gh", "bh", "bh", "", "db", "gd", "g", "hb", "d", "gd", "gb", "", "h", "h", "hd"],
     ["gd", "h", "hdb", "g", "hd", "g", "b", "hb", "b", "d", "gh", "d", "ghb", "hd", "d"],
-    ["gb", "", "h", "bd", "b", "d", "gh", "", "hd", "g", "bd", "gb", "h", "", "bd"],
-    ["gh", "d", "g", "hb", "hb", "d", "gb", "b", "bd", "g", "hb", "hb", "d", "g", "hd"],
+    ["gb", "", "h", "bd", "b", "d", "ghv", "v", "hdv", "g", "bd", "gb", "h", "", "bd"],
+    ["gh", "d", "g", "hb", "hb", "d", "gbv", "bv", "bdv", "g", "hb", "hb", "d", "g", "hd"],
     ["gd", "gd", "gd", "gh", "hb", "", "hb", "hbc", "hb", "", "hb", "hd", "gd", "gd", "gd"],
     ["gd", "gd", "gbdo", "gd", "gh", "b", "hb", "hb", "hb", "b", "hd", "gd", "gbdo", "gd", "gd"],
     ["g", "b", "h", "b", "b", "h", "hb", "h", "hb", "h", "b", "b", "h", "b", "d"],
-    ["gb", "hb", "b", "hb", "hb", "b", "ghd", "gd", "ghd", "b", "hb", "hb", "b", "hb", "bd"]
+    ["gb", "hb", "b", "hb", "hb", "b", "ghdv", "gd", "ghdv", "b", "hb", "hb", "b", "hb", "bd"]
   ]
   for num_ligne, ligne in enumerate(map):
     for num_pixel, pixel in enumerate(ligne):
-      case(num_pixel * wcase + int(wecran/2 - wmap * 10), num_ligne * hcase + int(hecran/2 - hmap * 10), pixel)
+      #case(num_pixel * wcase + int(wecran/2 - wmap * 10), num_ligne * hcase + int(hecran/2 - hmap * 10), pixel)
+      case(num_pixel * wcase, num_ligne * hcase + 6, pixel)
   px = 7 * wcase + int(wecran/2 - wmap * 10) + 3
   py = 7 * hcase + int(hecran/2 - hmap * 10) + 2
 
 def init():
   kandinsky.fill_rect(0, 0, wecran, hecran, fond)
-  rect(int(wecran/2 - wmap * 10), int(hecran/2 - hmap * 10), wmap * 20, hmap * 20, eligne, violet, fond)
+  #rect(int(wecran/2 - wmap * 10), int(hecran/2 - hmap * 10), wmap * 20, hmap * 20, eligne, violet, fond)
   #ghost(100, 15, rouge, 0)
   #ghost(100, 150, rose, 0)
   #ghost(150, 15, cyan, 0)
