@@ -2,8 +2,8 @@ import math, kandinsky, ion, time
 
 wecran = 320
 hecran = 222
-wmap = 15 #10 cases de 20x20px
-hmap = 10 #15 cases
+wmap = 15
+hmap = 10
 wcase = 21
 hcase = 21
 fond = kandinsky.color(0, 0, 0)
@@ -33,12 +33,12 @@ def rect(x, y, w, h, e, c, cfond):
   kandinsky.fill_rect(x + e, y + e, w - 2 * e, h - 2 * e, cfond)
 
 def case(x, y, type): #types : g, h, d, b, o, c
-  xc = x + 4
-  yc = y + 4
-  xb = x + 7
+  xc = x + 5
+  yc = y + 6
+  xb = x + 8
   yb = y + 7
-  xb2 = x + 9
-  yb2 = y + 8
+  xb2 = x + 10
+  yb2 = y + 9
   cerise = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
@@ -116,34 +116,34 @@ def draw_map():
   ]
   for num_ligne, ligne in enumerate(map):
     for num_pixel, pixel in enumerate(ligne):
-      #case(num_pixel * wcase + int(wecran/2 - wmap * 10), num_ligne * hcase + int(hecran/2 - hmap * 10), pixel)
       case(num_pixel * wcase, num_ligne * hcase + 6, pixel)
   px = 7 * wcase + int(wecran/2 - wmap * 10) - 7
   py = 7 * hcase + int(hecran/2 - hmap * 10) - 2
 
 def init():
   kandinsky.fill_rect(0, 0, wecran, hecran, fond)
-  rect(0, 6, wmap * wcase + 2, hmap * hcase + 2, eligne, violet, fond)
+  #rect(0, 6, wmap * wcase + 2, hmap * hcase + 2, eligne, violet, fond)
   #ghost(100, 15, rouge, 0)
   #ghost(100, 150, rose, 0)
   #ghost(150, 15, cyan, 0)
   #ghost(150, 150, orange, 0)
-  #case(180, 40, "ghdb")
   draw_map()
 
 def bordure(px, py):
+  marge = 2
+  range = 17
   resultat = [0, 0, 0, 0]
-  for i in range(px - 1, px + 16):
-    if kandinsky.get_pixel(i, py - 1) == violet:
+  for i in range(px - marge, px + range):
+    if kandinsky.get_pixel(i, py - marge) == violet:
       resultat[0] = resultat[0] + 1
-  for i in range(py - 1, py + 16):
-    if kandinsky.get_pixel(px + 16, i) == violet:
+  for i in range(py - marge, py + range):
+    if kandinsky.get_pixel(px + range, i) == violet:
       resultat[1] = resultat[1] + 1
-  for i in range(px - 1, px + 16):
-    if kandinsky.get_pixel(i, py + 16) == violet:
+  for i in range(px - marge, px + range):
+    if kandinsky.get_pixel(i, py + range) == violet:
       resultat[2] = resultat[2] + 1
-  for i in range(py - 1, py + 16):
-    if kandinsky.get_pixel(px - 1, i) == violet:
+  for i in range(py - marge, py + range):
+    if kandinsky.get_pixel(px - marge, i) == violet:
       resultat[3] = resultat[3] + 1
   
   return resultat
