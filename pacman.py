@@ -1,4 +1,4 @@
-import math, kandinsky, ion, time
+import math, kandinsky, ion, time, random
 
 wecran = 320
 hecran = 222
@@ -27,6 +27,14 @@ back = ion.KEY_BACK
 dire = 1 #1=droite, 2=bas, 3=gauche, 4=haut
 px = 100
 py = 100
+g1x = 7 * wcase + int(wecran/2 - wmap * 10) - 7
+g1y = 4 * hcase + int(hecran/2 - hmap * 10) - 2
+g2x = 6 * wcase + int(wecran/2 - wmap * 10) - 7
+g2y = 5 * hcase + int(hecran/2 - hmap * 10) - 2
+g3x = 8 * wcase + int(wecran/2 - wmap * 10) - 7
+g3y = 5 * hcase + int(hecran/2 - hmap * 10) - 2
+g4x = 7 * wcase + int(wecran/2 - wmap * 10) - 7
+g4y = 5 * hcase + int(hecran/2 - hmap * 10) - 2
 
 def rect(x, y, w, h, e, c, cfond):
   kandinsky.fill_rect(x, y, w, h, c)
@@ -133,38 +141,38 @@ def init():
 
 def bordure(px, py, perso): #perso : 1 = Pacman, 2 = ghost
   marge = 1
-  range = 16
+  rang = 16
   resultat = [0, 0, 0, 0]
   if perso == 1:
-    for i in range(px - marge, px + range):
+    for i in range(px - marge, px + rang):
       if kandinsky.get_pixel(i, py - marge) == violet or kandinsky.get_pixel(i, py - marge) == rose:
         resultat[0] = resultat[0] + 1
-    for i in range(py - marge, py + range):
-      if kandinsky.get_pixel(px + range, i) == violet or kandinsky.get_pixel(px + range, i) == rose:
+    for i in range(py - marge, py + rang):
+      if kandinsky.get_pixel(px + rang, i) == violet or kandinsky.get_pixel(px + rang, i) == rose:
         resultat[1] = resultat[1] + 1
-    for i in range(px - marge, px + range):
-      if kandinsky.get_pixel(i, py + range) == violet or kandinsky.get_pixel(i, py + range) == rose:
+    for i in range(px - marge, px + rang):
+      if kandinsky.get_pixel(i, py + rang) == violet or kandinsky.get_pixel(i, py + rang) == rose:
         resultat[2] = resultat[2] + 1
-    for i in range(py - marge, py + range):
+    for i in range(py - marge, py + rang):
       if kandinsky.get_pixel(px - marge, i) == violet or kandinsky.get_pixel(px - marge, i) == rose:
         resultat[3] = resultat[3] + 1
-    
-  for i in range(px - marge, px + range):
-    if kandinsky.get_pixel(i, py - marge) == violet:
-      resultat[0] = resultat[0] + 1
-  for i in range(py - marge, py + range):
-    if kandinsky.get_pixel(px + range, i) == violet:
-      resultat[1] = resultat[1] + 1
-  for i in range(px - marge, px + range):
-    if kandinsky.get_pixel(i, py + range) == violet:
-      resultat[2] = resultat[2] + 1
-  for i in range(py - marge, py + range):
-    if kandinsky.get_pixel(px - marge, i) == violet:
-      resultat[3] = resultat[3] + 1
+  elif perso == 2:  
+    for i in range(px - marge, px + rang):
+      if kandinsky.get_pixel(i, py - marge) == violet:
+        resultat[0] = resultat[0] + 1
+    for i in range(py - marge, py + rang):
+      if kandinsky.get_pixel(px + rang, i) == violet:
+        resultat[1] = resultat[1] + 1
+    for i in range(px - marge, px + rang):
+      if kandinsky.get_pixel(i, py + rang) == violet:
+        resultat[2] = resultat[2] + 1
+    for i in range(py - marge, py + rang):
+      if kandinsky.get_pixel(px - marge, i) == violet:
+        resultat[3] = resultat[3] + 1
   
   return resultat
 
-def ghost(x, y, couleur, comp):
+def ghost(x, y, couleur):
   ghost = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
@@ -343,6 +351,25 @@ def mouv_pacman(ouverture):
       py = py - 1
   pacman(px, py, dire, ouverture)
 
+def mouv_ghosts(xa, ya, comp):
+  #comportement aleatoire tah le Jean :
+  if comp == 1: #si le ghost est comportement aleatoire
+    deci = random.randint(1, 2)
+    if not bordure(px, py, 2)[1] >= 2:
+      if deci == 1:
+        xa = xa + 1
+    if not bordure(px, py, 2)[2] >= 2:
+      if deci == 1:
+        ya = ya + 1
+    if not bordure(px, py, 2)[3] >= 2:
+      if deci == 1:
+        xa = xa - 1
+    if not bordure(px, py, 2)[0] >= 2:
+      if deci == 1:
+        ya = ya - 1
+  retour = [xa, ya]
+  return retour
+
 init()
 acc = 0
 ouvert = True
@@ -354,8 +381,9 @@ while True:
   else:
     acc = 0
     ouvert = not ouvert
-  time.sleep(0.02)
   if pastouche:
     mouv_pacman(1)
   else:
     mouv_pacman(ouvert)
+  ghost(mouv_ghosts(g1x, g1y, 1)[0], mouv_ghosts(g1x, g1y, 1)[1], rouge)
+  time.sleep(0.02)
