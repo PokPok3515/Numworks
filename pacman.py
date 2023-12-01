@@ -91,11 +91,11 @@ def case(x, y, type): #types : g, h, d, b, o, c
   if "g" in type:
     kandinsky.fill_rect(x, y, int(emur/2), hcase, violet)
   if "h" in type:
-    kandinsky.fill_rect(x, y, wcase, int(emur/2), violet)
+    kandinsky.fill_rect(x, y, wcase + 2, int(emur/2), violet)
   if "d" in type:
     kandinsky.fill_rect(x + wcase, y, int(emur/2), hcase, violet)
   if "b" in type:
-    kandinsky.fill_rect(x, y + hcase, wcase, int(emur/2), violet)
+    kandinsky.fill_rect(x, y + hcase, wcase + 2, int(emur/2), violet)
 
 def draw_map():
   global wcase
@@ -123,7 +123,7 @@ def draw_map():
 
 def init():
   kandinsky.fill_rect(0, 0, wecran, hecran, fond)
-  #rect(int(wecran/2 - wmap * 10), int(hecran/2 - hmap * 10), wmap * 20, hmap * 20, eligne, violet, fond)
+  rect(0, 6, wmap * wcase + 2, hmap * hcase + 2, eligne, violet, fond)
   #ghost(100, 15, rouge, 0)
   #ghost(100, 150, rose, 0)
   #ghost(150, 15, cyan, 0)
