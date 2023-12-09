@@ -27,14 +27,26 @@ back = ion.KEY_BACK
 dire = 1 #1=droite, 2=bas, 3=gauche, 4=haut
 px = 100
 py = 100
-g1x = 7 * wcase + int(wecran/2 - wmap * 10) - 7
-g1y = 4 * hcase + int(hecran/2 - hmap * 10) - 2
-g2x = 6 * wcase + int(wecran/2 - wmap * 10) - 7
-g2y = 5 * hcase + int(hecran/2 - hmap * 10) - 2
-g3x = 8 * wcase + int(wecran/2 - wmap * 10) - 7
-g3y = 5 * hcase + int(hecran/2 - hmap * 10) - 2
-g4x = 7 * wcase + int(wecran/2 - wmap * 10) - 7
-g4y = 5 * hcase + int(hecran/2 - hmap * 10) - 2
+
+ghosts = [ # x, y, objectifx, objectify initiaux
+  [7 * wcase + int(wecran/2 - wmap * 10) - 7, 4 * hcase + int(hecran/2 - hmap * 10) - 2, 7 * wcase + int(wecran/2 - wmap * 10) - 7, 4 * hcase + int(hecran/2 - hmap * 10) - 2, 0],
+  [7 * wcase + int(wecran/2 - wmap * 10) - 7, 4 * hcase + int(hecran/2 - hmap * 10) - 2, 7 * wcase + int(wecran/2 - wmap * 10) - 7, 4 * hcase + int(hecran/2 - hmap * 10) - 2, 0],
+  [8 * wcase + int(wecran/2 - wmap * 10) - 7, 5 * hcase + int(hecran/2 - hmap * 10) - 2, 8 * wcase + int(wecran/2 - wmap * 10) - 7, 5 * hcase + int(hecran/2 - hmap * 10) - 2, 0],
+  [7 * wcase + int(wecran/2 - wmap * 10) - 7, 5 * hcase + int(hecran/2 - hmap * 10) - 2, 7 * wcase + int(wecran/2 - wmap * 10) - 7, 5 * hcase + int(hecran/2 - hmap * 10) - 2, 0]
+]
+
+map = [
+  ["v", "v", "v", "gho", "bh", "hd", "gbdv", "gd", "gbdv", "gh", "bh", "hdo", "v", "v", "v"],
+  ["v", "v", "v", "gd", "gh", "d", "gh", "b", "hd", "g", "hd", "gd", "v", "v", "v"],
+  ["gh", "bh", "bh", "", "db", "gd", "g", "hb", "d", "gd", "gb", "", "h", "h", "hd"],
+  ["gd", "h", "hdb", "g", "hd", "g", "b", "hb", "b", "d", "gh", "d", "ghb", "hd", "d"],
+  ["gb", "", "h", "bd", "b", "d", "gvp", "vp", "dvp", "g", "bd", "gb", "h", "", "bd"],
+  ["gh", "d", "g", "hb", "hb", "d", "gbv", "bv", "bdv", "g", "hb", "hb", "d", "g", "hd"],
+  ["gd", "gd", "gd", "gh", "hb", "", "hb", "hbc", "hb", "", "hb", "hd", "gd", "gd", "gd"],
+  ["gd", "gd", "gbdo", "gd", "gh", "b", "hb", "hb", "hb", "b", "hd", "gd", "gbdo", "gd", "gd"],
+  ["g", "b", "h", "b", "b", "h", "hb", "h", "hb", "h", "b", "b", "h", "b", "d"],
+  ["gb", "hb", "b", "hb", "hb", "b", "ghdv", "gd", "ghdv", "b", "hb", "hb", "b", "hb", "bd"]
+]
 
 def rect(x, y, w, h, e, c, cfond):
   kandinsky.fill_rect(x, y, w, h, c)
@@ -112,36 +124,23 @@ def draw_map():
   global hcase
   global px
   global py
-  map = [
-    ["v", "v", "v", "gho", "bh", "hd", "gbdv", "gd", "gbdv", "gh", "bh", "hdo", "v", "v", "v"],
-    ["v", "v", "v", "gd", "gh", "d", "gh", "b", "hd", "g", "hd", "gd", "v", "v", "v"],
-    ["gh", "bh", "bh", "", "db", "gd", "g", "hb", "d", "gd", "gb", "", "h", "h", "hd"],
-    ["gd", "h", "hdb", "g", "hd", "g", "b", "hb", "b", "d", "gh", "d", "ghb", "hd", "d"],
-    ["gb", "", "h", "bd", "b", "d", "ghv", "vp", "hdv", "g", "bd", "gb", "h", "", "bd"],
-    ["gh", "d", "g", "hb", "hb", "d", "gbv", "bv", "bdv", "g", "hb", "hb", "d", "g", "hd"],
-    ["gd", "gd", "gd", "gh", "hb", "", "hb", "hbc", "hb", "", "hb", "hd", "gd", "gd", "gd"],
-    ["gd", "gd", "gbdo", "gd", "gh", "b", "hb", "hb", "hb", "b", "hd", "gd", "gbdo", "gd", "gd"],
-    ["g", "b", "h", "b", "b", "h", "hb", "h", "hb", "h", "b", "b", "h", "b", "d"],
-    ["gb", "hb", "b", "hb", "hb", "b", "ghdv", "gd", "ghdv", "b", "hb", "hb", "b", "hb", "bd"]
-  ]
+  global map
   for num_ligne, ligne in enumerate(map):
     for num_pixel, pixel in enumerate(ligne):
       case(num_pixel * wcase, num_ligne * hcase + 6, pixel)
   px = 7 * wcase + int(wecran/2 - wmap * 10) - 7
   py = 7 * hcase + int(hecran/2 - hmap * 10) - 2
 
+pobjectifx = 7 * wcase + int(wecran/2 - wmap * 10) - 7
+pobjectify = 7 * hcase + int(hecran/2 - hmap * 10) - 2
+
 def init():
   kandinsky.fill_rect(0, 0, wecran, hecran, fond)
-  #rect(0, 6, wmap * wcase + 2, hmap * hcase + 2, eligne, violet, fond)
-  #ghost(100, 15, rouge, 0)
-  #ghost(100, 150, rose, 0)
-  #ghost(150, 15, cyan, 0)
-  #ghost(150, 150, orange, 0)
   draw_map()
 
 def bordure(px, py, perso): #perso : 1 = Pacman, 2 = ghost
-  marge = 1
-  rang = 16
+  marge = 2
+  rang = 17
   resultat = [0, 0, 0, 0]
   if perso == 1:
     for i in range(px - marge, px + rang):
@@ -193,7 +192,9 @@ def ghost(x, y, couleur):
   ]
   for num_ligne, ligne in enumerate(ghost):
     for num_pixel, pixel in enumerate(ligne):
-      if pixel == 1:
+      if pixel == 0:
+        kandinsky.set_pixel(x + num_pixel, y + num_ligne, fond)
+      elif pixel == 1:
         kandinsky.set_pixel(x + num_pixel, y + num_ligne, couleur)
       elif pixel == 2:
         kandinsky.set_pixel(x + num_pixel, y + num_ligne, blanc)
@@ -328,54 +329,96 @@ def pacman(x, y, ori, ouverture):
           elif pixel == 0:
             kandinsky.set_pixel(x+num_pixel, y+num_ligne, fond)
 
+def objectif_pacman(x, y):
+  global pobjectifx
+  global pobjectify
+  global hcase
+  global wcase
+  global px
+  global py
+  casx = math.floor(px / wcase)
+  casy = math.floor(py / hcase)
+  case = map[casy][casx]
+  if pobjectify == y:
+    if ion.keydown(droite) and not bordure(px, py, 1)[1] >= 2 and pobjectifx == x:
+      pobjectifx = x + wcase
+    elif ion.keydown(gauche) and not bordure(px, py, 1)[3] >= 2 and pobjectifx == x:
+      pobjectifx = x - wcase
+  if pobjectifx == x:
+    if ion.keydown(haut) and not bordure(px, py, 1)[0] >= 2 and pobjectify == y:
+      pobjectify = y - hcase
+    elif ion.keydown(bas) and not bordure(px, py, 1)[2] >= 2 and pobjectify == y and not "b" in case:
+      pobjectify = y + hcase
+
+def objectif_ghost(x, y, num_ghost):
+  global ghosts
+  casx = math.floor(ghosts[num_ghost][0] / wcase)
+  casy = math.floor(ghosts[num_ghost][1] / hcase)
+  case = map[casy][casx]
+  casxobj = math.floor(ghosts[num_ghost][2] / wcase)
+  casyobj = math.floor(ghosts[num_ghost][3] / wcase)
+  caseobj = map[casyobj][casxobj]
+  if ghosts[num_ghost][2] == ghosts[num_ghost][0] and ghosts[num_ghost][3] == ghosts[num_ghost][1]:
+    ghosts[num_ghost][4] = random.randint(1, 4)
+
+  if "p" in case and not bordure(x, y, 2)[0] >= 2 and ghosts[num_ghost][3] == ghosts[num_ghost][1]:
+    ghosts[num_ghost][3] = y - hcase
+        
+  if ghosts[num_ghost][2] == ghosts[num_ghost][0]:
+    if ghosts[num_ghost][4] == 1 and not "h" in case and not bordure(x, y, 2)[0] >= 2 and not bordure(ghosts[num_ghost][2], ghosts[num_ghost][3], 2)[0] >= 2:
+        ghosts[num_ghost][3] = y - hcase
+    elif ghosts[num_ghost][4] == 3 and not "b" in case and not bordure(x, y, 2)[2] >= 2 and not bordure(ghosts[num_ghost][2], ghosts[num_ghost][3], 2)[2] >= 2:
+        ghosts[num_ghost][3] = y + hcase
+
+  if ghosts[num_ghost][3] == ghosts[num_ghost][1]:
+    if ghosts[num_ghost][4] == 2 and not "d" in case and not bordure(x, y, 2)[1] >= 2 and not bordure(ghosts[num_ghost][2], ghosts[num_ghost][3], 2)[1] >= 2:
+        ghosts[num_ghost][2] = x + wcase
+    elif ghosts[num_ghost][4] == 4 and not "g" in case and not bordure(x, y, 2)[3] >= 2 and not bordure(ghosts[num_ghost][2], ghosts[num_ghost][3], 2)[3] >= 2: 
+        ghosts[num_ghost][2] = x - wcase
+  #kandinsky.fill_rect(ghosts[num_ghost][2] - 1, ghosts[num_ghost][3] - 1, 3, 3, cyan)
+
 def mouv_pacman(ouverture):
   global px
   global py
   global dire
-  
-  if ion.keydown(droite):
-    dire = 1
-    if not bordure(px, py, 1)[1] >= 2:
-      px = px + 1
-  elif ion.keydown(bas):
-    dire = 2
-    if not bordure(px, py, 1)[2] >= 2:
-      py = py + 1
-  elif ion.keydown(gauche):
+  objectif_pacman(px, py)
+  if pobjectifx < px and not bordure(px, py, 1)[3] >= 2:
+    px = px - 1
     dire = 3
-    if not bordure(px, py, 1)[3] >= 2:
-      px = px - 1
-  elif ion.keydown(haut):
+  elif pobjectifx > px and not bordure(px, py, 1)[1] >= 2:
+    px = px + 1
+    dire = 1
+  
+  if pobjectify < py and not bordure(px, py, 1)[2] >= 2:
+    py = py - 1
     dire = 4
-    if not bordure(px, py, 1)[0] >= 2:
-      py = py - 1
+  elif pobjectify > py: #and not bordure(px, py, 1)[0] >= 2:
+    py = py + 1
+    dire = 2
+
   pacman(px, py, dire, ouverture)
 
-def mouv_ghosts(xa, ya, comp):
-  #comportement aleatoire tah le Jean :
+def mouv_ghost(num_ghost, comp):
+  global ghosts
+  #comportement aleatoire tah Jean :
   if comp == 1: #si le ghost est comportement aleatoire
-    deci = random.randint(1, 2)
-    if not bordure(px, py, 2)[1] >= 2:
-      if deci == 1:
-        xa = xa + 1
-    if not bordure(px, py, 2)[2] >= 2:
-      if deci == 1:
-        ya = ya + 1
-    if not bordure(px, py, 2)[3] >= 2:
-      if deci == 1:
-        xa = xa - 1
-    if not bordure(px, py, 2)[0] >= 2:
-      if deci == 1:
-        ya = ya - 1
-  retour = [xa, ya]
-  return retour
+    
+    objectif_ghost(ghosts[num_ghost][0], ghosts[num_ghost][1], num_ghost)
+    if ghosts[num_ghost][2] < ghosts[num_ghost][0]:
+      ghosts[num_ghost][0] = ghosts[num_ghost][0] - 1
+    elif ghosts[num_ghost][2] > ghosts[num_ghost][0]:
+      ghosts[num_ghost][0] = ghosts[num_ghost][0] + 1
+    elif ghosts[num_ghost][3] < ghosts[num_ghost][1]:
+      ghosts[num_ghost][1] = ghosts[num_ghost][1] - 1
+    elif ghosts[num_ghost][3] > ghosts[num_ghost][1]:
+      ghosts[num_ghost][1] = ghosts[num_ghost][1] + 1
 
 init()
 acc = 0
 ouvert = True
 
 while True:
-  pastouche = not ion.keydown(droite) and not ion.keydown(bas) and not ion.keydown(gauche) and not ion.keydown(haut)
+  pastouche = pobjectifx == px and pobjectify == py
   if acc < 10:
     acc = acc + 1
   else:
@@ -385,5 +428,16 @@ while True:
     mouv_pacman(1)
   else:
     mouv_pacman(ouvert)
-  ghost(mouv_ghosts(g1x, g1y, 1)[0], mouv_ghosts(g1x, g1y, 1)[1], rouge)
+  
+  for i in range(0, 4):
+    mouv_ghost(i, 1)
+    if i == 0:
+      col = rouge
+    elif i == 1:
+      col = rose
+    elif i == 2:
+      col = orange
+    elif i == 3:
+      col = cyan
+    ghost(ghosts[i][0], ghosts[i][1], col)
   time.sleep(0.02)
